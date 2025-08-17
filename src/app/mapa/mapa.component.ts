@@ -10,7 +10,7 @@ import { Map, NavigationControl, type StyleSpecification, type IControl } from '
 export class MapaComponent implements OnInit, OnDestroy {
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef<HTMLDivElement>;
   private map?: Map;
-  base: 'osm' | 'sat' = 'osm';
+  base: 'osm' | 'esri' | 'google' = 'osm';
 
   ngOnInit(): void {
     const style: StyleSpecification = {
@@ -32,6 +32,13 @@ export class MapaComponent implements OnInit, OnDestroy {
           attribution:
             'Tiles © Esri — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
         },
+        googleSatellite: {
+          type: 'raster',
+          tiles: ['https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}'],
+          tileSize: 256,
+          maxzoom: 21,
+          attribution: '© Google Maps',
+        },
       },
       layers: [
         {
@@ -40,9 +47,15 @@ export class MapaComponent implements OnInit, OnDestroy {
           source: 'osm',
         },
         {
-          id: 'satellite-tiles',
+          id: 'esri-satellite-tiles',
           type: 'raster',
           source: 'esriWorldImagery',
+          layout: { visibility: 'none' },
+        },
+        {
+          id: 'google-satellite-tiles',
+          type: 'raster',
+          source: 'googleSatellite',
           layout: { visibility: 'none' },
         },
       ],
@@ -57,37 +70,52 @@ export class MapaComponent implements OnInit, OnDestroy {
 
     this.map.addControl(new NavigationControl({ visualizePitch: true }), 'top-right');
 
-    // Add integrated MapLibre control to toggle base layer
+    // Add integrated MapLibre control with dropdown for base layers
     const self = this;
     let ctrlContainer: HTMLElement | undefined;
+    let currentDropdown: HTMLSelectElement | undefined;
+    
     const baseToggleControl: IControl = {
       onAdd() {
         const container = document.createElement('div');
         container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
 
-  const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.title = 'Cambiar capa base (OSM/Satélite)';
-        btn.setAttribute('aria-label', 'Cambiar capa base');
-        btn.textContent = self.base === 'osm' ? 'Sat' : 'OSM';
-
-  // Make the button wider horizontally for better readability
-  btn.style.width = 'auto';
-  btn.style.minWidth = '64px';
-  btn.style.padding = '0 12px';
-  btn.style.display = 'inline-flex';
-  btn.style.alignItems = 'center';
-  btn.style.justifyContent = 'center';
-  btn.style.fontSize = '13px';
-
-        btn.addEventListener('click', () => {
-          const next = self.base === 'osm' ? 'sat' : 'osm';
-          self.switchBase(next);
-          btn.textContent = next === 'osm' ? 'Sat' : 'OSM';
+        const select = document.createElement('select');
+        select.title = 'Seleccionar capa base';
+        select.setAttribute('aria-label', 'Seleccionar capa base');
+        
+        // Options for the dropdown
+        const options = [
+          { value: 'osm', text: 'OpenStreetMap' },
+          { value: 'esri', text: 'Satélite (Esri)' },
+          { value: 'google', text: 'Satélite (Google)' }
+        ];
+        
+        options.forEach(opt => {
+          const option = document.createElement('option');
+          option.value = opt.value;
+          option.textContent = opt.text;
+          option.selected = opt.value === self.base;
+          select.appendChild(option);
         });
 
-        container.appendChild(btn);
+        // Styling for dropdown
+        select.style.width = 'auto';
+        select.style.minWidth = '140px';
+        select.style.padding = '4px 8px';
+        select.style.fontSize = '12px';
+        select.style.border = 'none';
+        select.style.background = 'white';
+        select.style.cursor = 'pointer';
+
+        select.addEventListener('change', () => {
+          const next = select.value as 'osm' | 'esri' | 'google';
+          self.switchBase(next);
+        });
+
+        container.appendChild(select);
         ctrlContainer = container;
+        currentDropdown = select;
         return container;
       },
       onRemove() {
@@ -95,18 +123,29 @@ export class MapaComponent implements OnInit, OnDestroy {
           ctrlContainer.parentNode.removeChild(ctrlContainer);
         }
         ctrlContainer = undefined;
+        currentDropdown = undefined;
       },
     };
     this.map.addControl(baseToggleControl, 'top-left');
   }
 
-  switchBase(next: 'osm' | 'sat') {
+  switchBase(next: 'osm' | 'esri' | 'google') {
     if (!this.map) return;
     this.base = next;
-    const showOsm = next === 'osm' ? 'visible' : 'none';
-    const showSat = next === 'sat' ? 'visible' : 'none';
-    this.map.setLayoutProperty('osm-tiles', 'visibility', showOsm);
-    this.map.setLayoutProperty('satellite-tiles', 'visibility', showSat);
+    
+    // Hide all layers first
+    this.map.setLayoutProperty('osm-tiles', 'visibility', 'none');
+    this.map.setLayoutProperty('esri-satellite-tiles', 'visibility', 'none');
+    this.map.setLayoutProperty('google-satellite-tiles', 'visibility', 'none');
+    
+    // Show selected layer
+    if (next === 'osm') {
+      this.map.setLayoutProperty('osm-tiles', 'visibility', 'visible');
+    } else if (next === 'esri') {
+      this.map.setLayoutProperty('esri-satellite-tiles', 'visibility', 'visible');
+    } else if (next === 'google') {
+      this.map.setLayoutProperty('google-satellite-tiles', 'visibility', 'visible');
+    }
   }
 
   ngOnDestroy(): void {
