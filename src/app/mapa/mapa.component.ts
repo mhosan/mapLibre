@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Map, NavigationControl, type StyleSpecification, type IControl } from 'maplibre-gl';
 import { MapLayersService } from './map-layers.service';
+import { type LayerMetadata } from '../models/map-layer.interfaces';
 
 @Component({
   selector: 'app-mapa',
@@ -11,11 +12,15 @@ import { MapLayersService } from './map-layers.service';
 export class MapaComponent implements OnInit, OnDestroy {
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef<HTMLDivElement>;
   private map?: Map;
-  base: 'osm' | 'esri' | 'google' = 'osm';
+  private currentLayerId: string = '';
+  private availableLayers: LayerMetadata[] = [];
 
   constructor(private layersService: MapLayersService) {}
 
   ngOnInit(): void {
+    this.availableLayers = this.layersService.getAvailableLayers();
+    this.currentLayerId = this.layersService.getDefaultLayer();
+    
     const style = this.layersService.getMapStyle();
 
     this.map = new Map({
@@ -26,7 +31,6 @@ export class MapaComponent implements OnInit, OnDestroy {
     });
 
     this.map.addControl(new NavigationControl({ visualizePitch: true }), 'top-right');
-
     // Add integrated MapLibre control with dropdown for base layers
     const self = this;
     let ctrlContainer: HTMLElement | undefined;
@@ -42,17 +46,16 @@ export class MapaComponent implements OnInit, OnDestroy {
         select.setAttribute('aria-label', 'Seleccionar capa base');
         
         // Options for the dropdown
-        const options = [
-          { value: 'osm', text: 'OpenStreetMap' },
-          { value: 'esri', text: 'Satélite (Esri)' },
-          { value: 'google', text: 'Satélite (Google)' }
-        ];
+        const options = self.availableLayers.map(layer => ({
+          value: layer.id,
+          text: layer.displayName
+        }));
         
         options.forEach(opt => {
           const option = document.createElement('option');
           option.value = opt.value;
           option.textContent = opt.text;
-          option.selected = opt.value === self.base;
+          option.selected = opt.value === self.currentLayerId;
           select.appendChild(option);
         });
 
@@ -66,8 +69,8 @@ export class MapaComponent implements OnInit, OnDestroy {
         select.style.cursor = 'pointer';
 
         select.addEventListener('change', () => {
-          const next = select.value as 'osm' | 'esri' | 'google';
-          self.switchBase(next);
+          const nextLayerId = select.value;
+          self.switchToLayer(nextLayerId);
         });
 
         container.appendChild(select);
@@ -86,23 +89,17 @@ export class MapaComponent implements OnInit, OnDestroy {
     this.map.addControl(baseToggleControl, 'top-left');
   }
 
-  switchBase(next: 'osm' | 'esri' | 'google') {
+  switchToLayer(layerId: string) {
     if (!this.map) return;
-    this.base = next;
     
-    // Hide all layers first
-    this.map.setLayoutProperty('osm-tiles', 'visibility', 'none');
-    this.map.setLayoutProperty('esri-satellite-tiles', 'visibility', 'none');
-    this.map.setLayoutProperty('google-satellite-tiles', 'visibility', 'none');
+    // Hide all layers
+    this.availableLayers.forEach(layer => {
+      this.map!.setLayoutProperty(layer.id, 'visibility', 'none');
+    });
     
     // Show selected layer
-    if (next === 'osm') {
-      this.map.setLayoutProperty('osm-tiles', 'visibility', 'visible');
-    } else if (next === 'esri') {
-      this.map.setLayoutProperty('esri-satellite-tiles', 'visibility', 'visible');
-    } else if (next === 'google') {
-      this.map.setLayoutProperty('google-satellite-tiles', 'visibility', 'visible');
-    }
+    this.map.setLayoutProperty(layerId, 'visibility', 'visible');
+    this.currentLayerId = layerId;
   }
 
   ngOnDestroy(): void {
