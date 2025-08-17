@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+// import { RouterOutlet } from '@angular/router';
+import { MapaComponent } from './mapa/mapa.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [MapaComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

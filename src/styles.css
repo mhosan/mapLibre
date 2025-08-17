@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'maplibre-gl/dist/maplibre-gl.css';
+
+/* Optional: basic reset for full-viewport apps */
+html, body {
+	height: 100%;
+	margin: 0;
+}
