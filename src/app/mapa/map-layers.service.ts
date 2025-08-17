@@ -7,15 +7,6 @@ import { LayerDefinition, SourceDefinition, LayerMetadata } from '../models/map-
 })
 export class MapLayersService {
 
-    /*****************************
-     * paso 3 agregar metadatos
-     ****************************/
-    private readonly layerMetadata: LayerMetadata[] = [
-        { id: 'osm-tiles', sourceId: 'osm', displayName: 'OpenStreetMap', enabled: true },
-        { id: 'esri-satellite-tiles', sourceId: 'esriWorldImagery', displayName: 'Satélite (Esri)', enabled: true },
-        { id: 'google-satellite-tiles', sourceId: 'googleSatellite', displayName: 'Satélite (Google)', enabled: true },
-        { id: 'argenmap-tiles', sourceId: 'argenMap', displayName: 'ArgenMap (IGN)', enabled: true },
-    ];
 
     getMapStyle(): StyleSpecification {
         return {
@@ -67,6 +58,26 @@ export class MapLayersService {
                 attribution: '© IGN Argentina',
                 scheme: 'tms',
             },
+            googleMaps: {
+                type: 'raster',
+                tiles: ['https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}'],
+                tileSize: 256,
+                maxzoom: 21,
+                attribution: '© Google Maps',
+            },
+            googleHybrid: {
+                type: 'raster',
+                tiles: ['https://mt1.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}'],
+                tileSize: 256,
+                maxzoom: 21,
+                attribution: '© Google Maps',
+            },
+            esriTransportation: {
+                type: 'raster',
+                tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'],
+                tileSize: 256,
+                attribution: '© Esri',
+            }
         };
     }
 
@@ -98,6 +109,38 @@ export class MapLayersService {
                 source: 'argenMap',
                 layout: { visibility: 'none' },
             },
+            {
+                id: 'google-maps-tiles',
+                type: 'raster',
+                source: 'googleMaps',
+                layout: { visibility: 'none' },
+            },
+            {
+                id: 'google-hybrid-tiles',
+                type: 'raster',
+                source: 'googleHybrid',
+                layout: { visibility: 'none' },
+            },
+            {
+                id: 'esri-transportation-tiles',
+                type: 'raster',
+                source: 'esriTransportation',
+                layout: { visibility: 'none' },
+            }
         ];
     }
+    
+    /*****************************
+    * paso 3 agregar metadatos
+    ****************************/
+    private readonly layerMetadata: LayerMetadata[] = [
+        { id: 'osm-tiles', sourceId: 'osm', displayName: 'OpenStreetMap', enabled: true },
+        { id: 'esri-satellite-tiles', sourceId: 'esriWorldImagery', displayName: 'Satélite (Esri)', enabled: true },
+        { id: 'argenmap-tiles', sourceId: 'argenMap', displayName: 'ArgenMap (IGN)', enabled: true },
+        { id: 'google-maps-tiles', sourceId: 'googleMaps', displayName: 'Google Maps', enabled: true },
+        { id: 'google-hybrid-tiles', sourceId: 'googleHybrid', displayName: 'Google Híbrido', enabled: true },
+        { id: 'google-satellite-tiles', sourceId: 'googleSatellite', displayName: 'Google Satélite', enabled: true },
+        { id: 'esri-transportation-tiles', sourceId: 'esriTransportation', displayName: 'Esri Transporte', enabled: true },
+    ];
+
 }
