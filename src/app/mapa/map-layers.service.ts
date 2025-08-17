@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { type StyleSpecification } from 'maplibre-gl';
-import { LayerDefinition, SourceDefinition, LayerMetadata } from '../models/map-layer.interfaces';
+import { LayerDefinition, RasterSourceDefinition, GeoJSONSourceDefinition, LayerMetadata, OverlayMetadata } from '../models/map-layer.interfaces';
 
 @Injectable({
     providedIn: 'root'
@@ -27,7 +27,7 @@ export class MapLayersService {
     /****************************
      * paso 1: agregar sources 
      ****************************/
-    private getSources(): Record<string, SourceDefinition> {
+    private getSources(): Record<string, RasterSourceDefinition | GeoJSONSourceDefinition> {
         return {
             osm: {
                 type: 'raster',
@@ -77,6 +77,15 @@ export class MapLayersService {
                 tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'],
                 tileSize: 256,
                 attribution: '© Esri',
+            },
+            // Fuentes GeoJSON para overlays
+            redVialNacional: {
+                type: 'geojson',
+                data: '/assets/json/redVialNacional.geojson',
+            },
+            redVialProvincial: {
+                type: 'geojson',
+                data: '/assets/json/redVialProvincial.geojson',
             }
         };
     }
@@ -126,10 +135,31 @@ export class MapLayersService {
                 type: 'raster',
                 source: 'esriTransportation',
                 layout: { visibility: 'none' },
+            },
+            // Capas vectoriales para overlays
+            {
+                id: 'red-vial-nacional',
+                type: 'line',
+                source: 'redVialNacional',
+                layout: { visibility: 'none' },
+                paint: {
+                    'line-color': '#ff0000',
+                    'line-width': 2
+                }
+            },
+            {
+                id: 'red-vial-provincial',
+                type: 'line',
+                source: 'redVialProvincial',
+                layout: { visibility: 'none' },
+                paint: {
+                    'line-color': '#0000ff',
+                    'line-width': 1
+                }
             }
         ];
     }
-    
+
     /*****************************
     * paso 3 agregar metadatos
     ****************************/
@@ -142,5 +172,17 @@ export class MapLayersService {
         { id: 'google-satellite-tiles', sourceId: 'googleSatellite', displayName: 'Google Satélite', enabled: true },
         { id: 'esri-transportation-tiles', sourceId: 'esriTransportation', displayName: 'Esri Transporte', enabled: true },
     ];
+
+    /****************************
+     * overlays vectoriales
+     ****************************/
+    private readonly overlayMetadata: OverlayMetadata[] = [
+        { id: 'red-vial-nacional', sourceId: 'redVialNacional', displayName: 'Red Vial Nacional', enabled: true, visible: false },
+        { id: 'red-vial-provincial', sourceId: 'redVialProvincial', displayName: 'Red Vial Provincial', enabled: true, visible: false },
+    ];
+
+    getAvailableOverlays(): OverlayMetadata[] {
+        return this.overlayMetadata.filter(overlay => overlay.enabled);
+    }
 
 }

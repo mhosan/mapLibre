@@ -9,12 +9,13 @@
 
 ### 1. DEFINICIÓN EXACTA DE LA MODIFICACIÓN
 **Cambio solicitado:**
-Extraer la carga de las capas del componente mapa
+Incorporar capas superpuestas vectoriales
 [DESCRIPCIÓN ESPECÍFICA DE QUÉ MODIFICAR AQUÍ]
-La carga de las capas que se usan en el mapa se hace en el componente mapa.
-Proponer una estrategia para desacoplar esa funcionalidad del componente mapa
-y tener esa funcionalidad fuera del componente mapa, por escalabilidad y 
-facilidad de mantenimiento
+Incorporar sobre la capa base activa a las capas superpuestas (overlays) vectoriales
+en formato json que se encuentran en la carpeta assets/json. Se deben agregar al 
+actual control que muestra las capas base, pero no como radiobutton sino como 
+checkbox cada una, ya que se pueden superponer.
+
 **Especificaciones obligatorias:**
 - [ ] Comportamiento ACTUAL a cambiar (específico)
 - [ ] Comportamiento DESEADO (específico)

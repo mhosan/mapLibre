@@ -1,11 +1,12 @@
 export interface LayerDefinition {
     id: string;
-    type: 'raster';
+    type: 'raster' | 'line' | 'fill';
     source: string;
     layout?: { visibility: 'visible' | 'none' };
+    paint?: any;
 }
 
-export interface SourceDefinition {
+export interface RasterSourceDefinition {
     type: 'raster';
     tiles: string[];
     tileSize: number;
@@ -14,9 +15,24 @@ export interface SourceDefinition {
     scheme?: 'xyz' | 'tms';
 }
 
+export interface GeoJSONSourceDefinition {
+    type: 'geojson';
+    data: string;
+}
+
+export type SourceDefinition = RasterSourceDefinition | GeoJSONSourceDefinition;
+
 export interface LayerMetadata {
     id: string;
     sourceId: string;
     displayName: string;
     enabled: boolean;
+}
+
+export interface OverlayMetadata {
+    id: string;
+    sourceId: string;
+    displayName: string;
+    enabled: boolean;
+    visible: boolean;
 }

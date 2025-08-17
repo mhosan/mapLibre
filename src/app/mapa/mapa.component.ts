@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Map, NavigationControl, type StyleSpecification, type IControl } from 'maplibre-gl';
 import { MapLayersService } from './map-layers.service';
-import { type LayerMetadata } from '../models/map-layer.interfaces';
+import { type LayerMetadata, type OverlayMetadata } from '../models/map-layer.interfaces';
 
 @Component({
   selector: 'app-mapa',
@@ -14,11 +14,13 @@ export class MapaComponent implements OnInit, OnDestroy {
   private map?: Map;
   private currentLayerId: string = '';
   private availableLayers: LayerMetadata[] = [];
+  private availableOverlays: OverlayMetadata[] = [];
 
   constructor(private layersService: MapLayersService) {}
 
   ngOnInit(): void {
     this.availableLayers = this.layersService.getAvailableLayers();
+    this.availableOverlays = this.layersService.getAvailableOverlays();
     this.currentLayerId = this.layersService.getDefaultLayer();
     
     const style = this.layersService.getMapStyle();
@@ -74,6 +76,52 @@ export class MapaComponent implements OnInit, OnDestroy {
         });
 
         container.appendChild(select);
+
+        // Agregar checkboxes para overlays
+        if (self.availableOverlays.length > 0) {
+          const overlayContainer = document.createElement('div');
+          overlayContainer.style.marginTop = '8px';
+          overlayContainer.style.padding = '4px 8px';
+          overlayContainer.style.background = 'white';
+          overlayContainer.style.borderTop = '1px solid #ccc';
+
+          const overlayTitle = document.createElement('div');
+          overlayTitle.textContent = 'Capas superpuestas:';
+          overlayTitle.style.fontSize = '11px';
+          overlayTitle.style.fontWeight = 'bold';
+          overlayTitle.style.marginBottom = '4px';
+          overlayContainer.appendChild(overlayTitle);
+
+          self.availableOverlays.forEach(overlay => {
+            const checkboxContainer = document.createElement('div');
+            checkboxContainer.style.display = 'flex';
+            checkboxContainer.style.alignItems = 'center';
+            checkboxContainer.style.marginBottom = '2px';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = `overlay-${overlay.id}`;
+            checkbox.checked = overlay.visible;
+            checkbox.style.marginRight = '6px';
+
+            const label = document.createElement('label');
+            label.setAttribute('for', `overlay-${overlay.id}`);
+            label.textContent = overlay.displayName;
+            label.style.fontSize = '11px';
+            label.style.cursor = 'pointer';
+
+            checkbox.addEventListener('change', () => {
+              self.toggleOverlay(overlay.id, checkbox.checked);
+            });
+
+            checkboxContainer.appendChild(checkbox);
+            checkboxContainer.appendChild(label);
+            overlayContainer.appendChild(checkboxContainer);
+          });
+
+          container.appendChild(overlayContainer);
+        }
+
         ctrlContainer = container;
         currentDropdown = select;
         return container;
@@ -100,6 +148,19 @@ export class MapaComponent implements OnInit, OnDestroy {
     // Show selected layer
     this.map.setLayoutProperty(layerId, 'visibility', 'visible');
     this.currentLayerId = layerId;
+  }
+
+  toggleOverlay(overlayId: string, visible: boolean) {
+    if (!this.map) return;
+    
+    // Toggle overlay visibility
+    this.map.setLayoutProperty(overlayId, 'visibility', visible ? 'visible' : 'none');
+    
+    // Update overlay state
+    const overlay = this.availableOverlays.find(o => o.id === overlayId);
+    if (overlay) {
+      overlay.visible = visible;
+    }
   }
 
   ngOnDestroy(): void {
