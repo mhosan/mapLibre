@@ -46,7 +46,8 @@ export class MapaComponent implements OnInit, OnDestroy {
       const properties = feature.properties;
       let html = '<table>';
       for (const key in properties) {
-        html += `<tr><th style=\"text-align:left; padding-right:8px;\">${key}</th><td>${properties[key]}</td></tr>`;
+        if (key === 'Representa') continue;
+        html += `<tr><th style="text-align:left; padding-right:8px;">${key}</th><td>${properties[key]}</td></tr>`;
       }
       html += '</table>';
       new Popup()
