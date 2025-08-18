@@ -16,19 +16,18 @@ export class MapaComponent implements OnInit, OnDestroy {
   private availableLayers: LayerMetadata[] = [];
   private availableOverlays: OverlayMetadata[] = [];
 
-  constructor(private layersService: MapLayersService) {}
+  constructor(private layersService: MapLayersService) { }
 
   ngOnInit(): void {
-  this.availableLayers = this.layersService.getAvailableLayers();
-  // Filtrar overlays para que no aparezcan rutas nacionales ni provinciales
-  this.availableOverlays = this.layersService.getAvailableOverlays().filter(o => o.id !== 'red-vial-nacional' && o.id !== 'red-vial-provincial');
-  this.currentLayerId = this.layersService.getDefaultLayer();
-    
-  this.initializeMap();
+    this.availableLayers = this.layersService.getAvailableLayers();
+    // Filtrar overlays para que no aparezcan rutas nacionales ni provinciales
+    this.availableOverlays = this.layersService.getAvailableOverlays().filter(o => o.id !== 'red-vial-nacional' && o.id !== 'red-vial-provincial');
+    this.currentLayerId = this.layersService.getDefaultLayer();
+    this.initializeMap();
   }
 
   private async initializeMap(): Promise<void> {
-    const style = await this.layersService.getMapStyleWithTransforms();
+    const style = this.layersService.getMapStyle();
 
     this.map = new Map({
       container: this.mapContainer.nativeElement,
@@ -62,13 +61,13 @@ export class MapaComponent implements OnInit, OnDestroy {
         .setHTML(html)
         .addTo(this.map!);
     });
-    
-    
+
+
     // Add integrated MapLibre control with dropdown for base layers
     const self = this;
     let ctrlContainer: HTMLElement | undefined;
     let currentDropdown: HTMLSelectElement | undefined;
-    
+
     const baseToggleControl: IControl = {
       onAdd() {
         const container = document.createElement('div');
@@ -77,13 +76,13 @@ export class MapaComponent implements OnInit, OnDestroy {
         const select = document.createElement('select');
         select.title = 'Seleccionar capa base';
         select.setAttribute('aria-label', 'Seleccionar capa base');
-        
+
         // Options for the dropdown
         const options = self.availableLayers.map(layer => ({
           value: layer.id,
           text: layer.displayName
         }));
-        
+
         options.forEach(opt => {
           const option = document.createElement('option');
           option.value = opt.value;
@@ -170,12 +169,12 @@ export class MapaComponent implements OnInit, OnDestroy {
 
   switchToLayer(layerId: string) {
     if (!this.map) return;
-    
+
     // Hide all layers
     this.availableLayers.forEach(layer => {
       this.map!.setLayoutProperty(layer.id, 'visibility', 'none');
     });
-    
+
     // Show selected layer
     this.map.setLayoutProperty(layerId, 'visibility', 'visible');
     this.currentLayerId = layerId;
@@ -183,10 +182,10 @@ export class MapaComponent implements OnInit, OnDestroy {
 
   toggleOverlay(overlayId: string, visible: boolean) {
     if (!this.map) return;
-    
+
     // Toggle overlay visibility
     this.map.setLayoutProperty(overlayId, 'visibility', visible ? 'visible' : 'none');
-    
+
     // Update overlay state
     const overlay = this.availableOverlays.find(o => o.id === overlayId);
     if (overlay) {

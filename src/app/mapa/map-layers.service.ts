@@ -9,28 +9,7 @@ import { CoordinateSystemService } from '../services/coordinate-system.service';
 export class MapLayersService {
 
     constructor(private coordinateSystemService: CoordinateSystemService) {}
-
-
-    getMapStyle(): StyleSpecification {
-        return {
-            version: 8,
-            sources: this.getSources(),
-            layers: this.getLayers()
-        };
-    }
-
-    /**
-     * Obtiene el estilo del mapa con transformación de coordenadas para overlays
-     */
-    async getMapStyleWithTransforms(): Promise<StyleSpecification> {
-        const sources = await this.getTransformedSources();
-        return {
-            version: 8,
-            sources: sources,
-            layers: this.getLayers()
-        };
-    }
-
+    
     getAvailableLayers(): LayerMetadata[] {
         return this.layerMetadata.filter(layer => layer.enabled);
     }
@@ -113,52 +92,7 @@ export class MapLayersService {
         };
     }
 
-    /**
-     * Obtiene las fuentes con transformaciones aplicadas para overlays vectoriales
-     */
-    private async getTransformedSources(): Promise<Record<string, RasterSourceDefinition | GeoJSONSourceDefinition>> {
-        const originalSources = this.getSources();
-        const transformedSources: Record<string, RasterSourceDefinition | GeoJSONSourceDefinition> = {};
-
-        for (const [sourceId, source] of Object.entries(originalSources)) {
-            if (source.type === 'geojson') {
-                // Encontrar metadatos del overlay para obtener CRS
-                const overlayMeta = this.overlayMetadata.find(overlay => overlay.sourceId === sourceId);
-                
-                if (overlayMeta && overlayMeta.crs) {
-                    try {
-                        // Transformar GeoJSON si es necesario
-                        const transformedData = await this.coordinateSystemService.transformGeoJSON(
-                            source.data,
-                            overlayMeta.crs,
-                            'EPSG:4326'
-                        );
-                        
-                        // Crear fuente con datos transformados
-                        transformedSources[sourceId] = {
-                            type: 'geojson',
-                            data: transformedData
-                        };
-                        
-                        // console.log eliminado
-                    } catch (error) {
-                        console.warn(`Error transformando ${sourceId}:`, error);
-                        // Usar fuente original en caso de error
-                        transformedSources[sourceId] = source;
-                    }
-                } else {
-                    // Fuente sin CRS definido, usar original
-                    transformedSources[sourceId] = source;
-                }
-            } else {
-                // Fuentes raster no necesitan transformación
-                transformedSources[sourceId] = source;
-            }
-        }
-
-        return transformedSources;
-    }
-
+    
     /****************************
      * paso 2: agregar layers
      ****************************/
@@ -281,6 +215,14 @@ export class MapLayersService {
 
     getAvailableOverlays(): OverlayMetadata[] {
         return this.overlayMetadata.filter(overlay => overlay.enabled);
+    }
+
+    public getMapStyle(): StyleSpecification {
+        return {
+            version: 8,
+            sources: this.getSources(),
+            layers: this.getLayers()
+        };
     }
 
 }
