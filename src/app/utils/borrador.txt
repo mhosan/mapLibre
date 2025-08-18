@@ -9,12 +9,12 @@
 
 ### 1. DEFINICIÓN EXACTA DE LA MODIFICACIÓN
 **Cambio solicitado:**
-Incorporar capas superpuestas vectoriales
+Incorporar evento click sobre features vectoriales.
 [DESCRIPCIÓN ESPECÍFICA DE QUÉ MODIFICAR AQUÍ]
-Incorporar sobre la capa base activa a las capas superpuestas (overlays) vectoriales
-en formato json que se encuentran en la carpeta assets/json. Se deben agregar al 
-actual control que muestra las capas base, pero no como radiobutton sino como 
-checkbox cada una, ya que se pueden superponer.
+Implementar click sobre cada punto de la capa vectorial "bomberos"
+para mostrar en un popup el contenido de su tabla de atributos.
+Utilizar la documentación de Maplibre para homologar la 
+modificacion.
 
 **Especificaciones obligatorias:**
 - [ ] Comportamiento ACTUAL a cambiar (específico)
@@ -37,8 +37,11 @@ checkbox cada una, ya que se pueden superponer.
 
 ### 3. INVESTIGACIÓN TÉCNICA ESPECÍFICA
 **Documentación de referencia:**
-- DHTMLX Gantt API: https://docs.dhtmlx.com/gantt/api__refs__gantt.html
-- Ejemplos oficiales: https://docs.dhtmlx.com/gantt/samples/
+- https://maplibre.org/maplibre-gl-js/docs/
+- https://maplibre.org/maplibre-gl-js/docs/plugins/
+- https://maplibre.org/maplibre-gl-js/docs/style-spec/
+- https://maplibre.org/maplibre-gl-js/docs/API/
+- https://maplibre.org/maplibre-gl-js/docs/examples/
 
 **Validación de la modificación:**
 - Confirmar que el cambio es técnicamente viable

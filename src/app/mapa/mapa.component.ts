@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Map, NavigationControl, type StyleSpecification, type IControl } from 'maplibre-gl';
+import { Map, NavigationControl, Popup, type StyleSpecification, type IControl } from 'maplibre-gl';
 import { MapLayersService } from './map-layers.service';
 import { type LayerMetadata, type OverlayMetadata } from '../models/map-layer.interfaces';
 
@@ -23,7 +23,11 @@ export class MapaComponent implements OnInit, OnDestroy {
     this.availableOverlays = this.layersService.getAvailableOverlays();
     this.currentLayerId = this.layersService.getDefaultLayer();
     
-    const style = this.layersService.getMapStyle();
+    this.initializeMap();
+  }
+
+  private async initializeMap(): Promise<void> {
+    const style = await this.layersService.getMapStyleWithTransforms();
 
     this.map = new Map({
       container: this.mapContainer.nativeElement,
@@ -33,6 +37,25 @@ export class MapaComponent implements OnInit, OnDestroy {
     });
 
     this.map.addControl(new NavigationControl({ visualizePitch: true }), 'top-right');
+
+    // Evento click sobre puntos de la capa 'comisarias' para mostrar popup con atributos
+    this.map.on('click', 'comisarias', (e) => {
+      const features = this.map!.queryRenderedFeatures(e.point, { layers: ['comisarias'] });
+      if (!features.length) return;
+      const feature = features[0];
+      const properties = feature.properties;
+      let html = '<table>';
+      for (const key in properties) {
+        html += `<tr><th style=\"text-align:left; padding-right:8px;\">${key}</th><td>${properties[key]}</td></tr>`;
+      }
+      html += '</table>';
+      new Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(html)
+        .addTo(this.map!);
+    });
+    
+    
     // Add integrated MapLibre control with dropdown for base layers
     const self = this;
     let ctrlContainer: HTMLElement | undefined;

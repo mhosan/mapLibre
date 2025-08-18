@@ -1,17 +1,32 @@
 import { Injectable } from '@angular/core';
 import { type StyleSpecification } from 'maplibre-gl';
 import { LayerDefinition, RasterSourceDefinition, GeoJSONSourceDefinition, LayerMetadata, OverlayMetadata } from '../models/map-layer.interfaces';
+import { CoordinateSystemService } from '../services/coordinate-system.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MapLayersService {
 
+    constructor(private coordinateSystemService: CoordinateSystemService) {}
+
 
     getMapStyle(): StyleSpecification {
         return {
             version: 8,
             sources: this.getSources(),
+            layers: this.getLayers()
+        };
+    }
+
+    /**
+     * Obtiene el estilo del mapa con transformación de coordenadas para overlays
+     */
+    async getMapStyleWithTransforms(): Promise<StyleSpecification> {
+        const sources = await this.getTransformedSources();
+        return {
+            version: 8,
+            sources: sources,
             layers: this.getLayers()
         };
     }
@@ -87,7 +102,58 @@ export class MapLayersService {
                 type: 'geojson',
                 data: '/assets/json/redVialProvincial.geojson',
             }
+            ,
+            comisarias: {
+                type: 'geojson',
+                data: '/assets/json/comisarias.geojson',
+            }
         };
+    }
+
+    /**
+     * Obtiene las fuentes con transformaciones aplicadas para overlays vectoriales
+     */
+    private async getTransformedSources(): Promise<Record<string, RasterSourceDefinition | GeoJSONSourceDefinition>> {
+        const originalSources = this.getSources();
+        const transformedSources: Record<string, RasterSourceDefinition | GeoJSONSourceDefinition> = {};
+
+        for (const [sourceId, source] of Object.entries(originalSources)) {
+            if (source.type === 'geojson') {
+                // Encontrar metadatos del overlay para obtener CRS
+                const overlayMeta = this.overlayMetadata.find(overlay => overlay.sourceId === sourceId);
+                
+                if (overlayMeta && overlayMeta.crs) {
+                    try {
+                        // Transformar GeoJSON si es necesario
+                        const transformedData = await this.coordinateSystemService.transformGeoJSON(
+                            source.data,
+                            overlayMeta.crs,
+                            'EPSG:4326'
+                        );
+                        
+                        // Crear fuente con datos transformados
+                        transformedSources[sourceId] = {
+                            type: 'geojson',
+                            data: transformedData
+                        };
+                        
+                        // console.log eliminado
+                    } catch (error) {
+                        console.warn(`Error transformando ${sourceId}:`, error);
+                        // Usar fuente original en caso de error
+                        transformedSources[sourceId] = source;
+                    }
+                } else {
+                    // Fuente sin CRS definido, usar original
+                    transformedSources[sourceId] = source;
+                }
+            } else {
+                // Fuentes raster no necesitan transformación
+                transformedSources[sourceId] = source;
+            }
+        }
+
+        return transformedSources;
     }
 
     /****************************
@@ -157,6 +223,19 @@ export class MapLayersService {
                     'line-width': 1
                 }
             }
+            ,
+            {
+                id: 'comisarias',
+                type: 'circle',
+                source: 'comisarias',
+                layout: { visibility: 'none' },
+                paint: {
+                    'circle-radius': 6,
+                    'circle-color': '#00b300',
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': '#ffffff'
+                }
+            }
         ];
     }
 
@@ -177,8 +256,9 @@ export class MapLayersService {
      * overlays vectoriales
      ****************************/
     private readonly overlayMetadata: OverlayMetadata[] = [
-        { id: 'red-vial-nacional', sourceId: 'redVialNacional', displayName: 'Red Vial Nacional', enabled: true, visible: false },
-        { id: 'red-vial-provincial', sourceId: 'redVialProvincial', displayName: 'Red Vial Provincial', enabled: true, visible: false },
+    { id: 'red-vial-nacional', sourceId: 'redVialNacional', displayName: 'Red Vial Nacional', enabled: true, visible: false, crs: 'EPSG:22175' },
+    { id: 'red-vial-provincial', sourceId: 'redVialProvincial', displayName: 'Red Vial Provincial', enabled: true, visible: false, crs: 'EPSG:22175' },
+    { id: 'comisarias', sourceId: 'comisarias', displayName: 'Comisarías', enabled: true, visible: false, crs: 'EPSG:4326' },
     ];
 
     getAvailableOverlays(): OverlayMetadata[] {

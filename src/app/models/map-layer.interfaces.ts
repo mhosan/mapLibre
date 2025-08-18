@@ -1,6 +1,6 @@
 export interface LayerDefinition {
     id: string;
-    type: 'raster' | 'line' | 'fill';
+    type: 'raster' | 'line' | 'fill' | 'circle';
     source: string;
     layout?: { visibility: 'visible' | 'none' };
     paint?: any;
@@ -35,4 +35,5 @@ export interface OverlayMetadata {
     displayName: string;
     enabled: boolean;
     visible: boolean;
+    crs?: string; // Sistema de coordenadas de la capa
 }

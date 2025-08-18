@@ -37,8 +37,11 @@
 
 ### 3. INVESTIGACIÓN TÉCNICA ESPECÍFICA
 **Documentación de referencia:**
-- DHTMLX Gantt API: https://docs.dhtmlx.com/gantt/api__refs__gantt.html
-- Ejemplos oficiales: https://docs.dhtmlx.com/gantt/samples/
+- https://maplibre.org/maplibre-gl-js/docs/
+- https://maplibre.org/maplibre-gl-js/docs/plugins/
+- https://maplibre.org/maplibre-gl-js/docs/style-spec/
+- https://maplibre.org/maplibre-gl-js/docs/API/
+- https://maplibre.org/maplibre-gl-js/docs/examples/
 
 **Validación de la modificación:**
 - Confirmar que el cambio es técnicamente viable
