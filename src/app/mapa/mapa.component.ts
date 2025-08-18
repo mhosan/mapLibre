@@ -39,15 +39,21 @@ export class MapaComponent implements OnInit, OnDestroy {
 
     this.map.addControl(new NavigationControl({ visualizePitch: true }), 'top-right');
 
-    // Evento click sobre puntos de la capa 'comisarias' para mostrar popup con atributos
-    this.map.on('click', 'comisarias', (e) => {
-      const features = this.map!.queryRenderedFeatures(e.point, { layers: ['comisarias'] });
+    // Evento click general para cualquier capa vectorial visible
+    this.map.on('click', (e) => {
+      // Obtener solo las capas vectoriales activas (circle, line, fill) y visibles
+      const vectorLayerIds = this.availableOverlays
+        .filter(o => this.map!.getLayoutProperty(o.id, 'visibility') === 'visible')
+        .map(o => o.id);
+
+      if (vectorLayerIds.length === 0) return;
+
+      const features = this.map!.queryRenderedFeatures(e.point, { layers: vectorLayerIds });
       if (!features.length) return;
       const feature = features[0];
       const properties = feature.properties;
       let html = '<table>';
       for (const key in properties) {
-        if (key === 'Representa') continue;
         html += `<tr><th style="text-align:left; padding-right:8px;">${key}</th><td>${properties[key]}</td></tr>`;
       }
       html += '</table>';

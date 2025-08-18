@@ -9,12 +9,15 @@
 
 ### 1. DEFINICIÓN EXACTA DE LA MODIFICACIÓN
 **Cambio solicitado:**
-Incorporar evento click sobre features vectoriales.
+Incorporar evento click para cualquier capa vectorial.
+
 [DESCRIPCIÓN ESPECÍFICA DE QUÉ MODIFICAR AQUÍ]
-Implementar click sobre cada punto de la capa vectorial "bomberos"
+Implementar click sobre cada feature de cualquier capa vectorial
 para mostrar en un popup el contenido de su tabla de atributos.
 Utilizar la documentación de Maplibre para homologar la 
 modificacion.
+Eliminar el evento click.on actual ya que funciona solamente sobre
+una sola capa y reemplazar por el nuevo codigo.
 
 **Especificaciones obligatorias:**
 - [ ] Comportamiento ACTUAL a cambiar (específico)
