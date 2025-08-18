@@ -94,18 +94,21 @@ export class MapLayersService {
                 attribution: '© Esri',
             },
             // Fuentes GeoJSON para overlays
-            redVialNacional: {
-                type: 'geojson',
-                data: '/assets/json/redVialNacional.geojson',
-            },
-            redVialProvincial: {
-                type: 'geojson',
-                data: '/assets/json/redVialProvincial.geojson',
-            }
-            ,
             comisarias: {
                 type: 'geojson',
                 data: '/assets/json/comisarias.geojson',
+            },
+            escuelas: {
+                type: 'geojson',
+                data: '/assets/json/escuelas.geojson',
+            },
+            calles:{
+                type: 'geojson',
+                data: '/assets/json/callesLPBssoEda.geojson',
+            },
+            partidos:{
+                type: 'geojson',
+                data: '/assets/json/partidos.geojson',
             }
         };
     }
@@ -160,7 +163,7 @@ export class MapLayersService {
      * paso 2: agregar layers
      ****************************/
     private getLayers(): LayerDefinition[] {
-        return [
+    return [
             {
                 id: 'osm-tiles',
                 type: 'raster',
@@ -204,26 +207,15 @@ export class MapLayersService {
             },
             // Capas vectoriales para overlays
             {
-                id: 'red-vial-nacional',
+                id: 'calles',
                 type: 'line',
-                source: 'redVialNacional',
+                source: 'calles',
                 layout: { visibility: 'none' },
                 paint: {
                     'line-color': '#ff0000',
                     'line-width': 2
                 }
             },
-            {
-                id: 'red-vial-provincial',
-                type: 'line',
-                source: 'redVialProvincial',
-                layout: { visibility: 'none' },
-                paint: {
-                    'line-color': '#0000ff',
-                    'line-width': 1
-                }
-            }
-            ,
             {
                 id: 'comisarias',
                 type: 'circle',
@@ -234,6 +226,29 @@ export class MapLayersService {
                     'circle-color': '#00b300',
                     'circle-stroke-width': 2,
                     'circle-stroke-color': '#ffffff'
+                }
+            },
+            {
+                id: 'escuelas',
+                type: 'circle',
+                source: 'escuelas',
+                layout: { visibility: 'none' },
+                paint: {
+                    'circle-radius': 6,
+                    'circle-color': '#b37400ff',
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': '#ffffff'
+                }
+            },
+            {
+                id: 'partidos',
+                type: 'fill',
+                source: 'partidos',
+                layout: { visibility: 'none' },
+                paint: {
+                    'fill-color': '#3388ff',
+                    'fill-opacity': 0.3,
+                    'fill-outline-color': '#2255aa'
                 }
             }
         ];
@@ -259,7 +274,10 @@ export class MapLayersService {
     { id: 'red-vial-nacional', sourceId: 'redVialNacional', displayName: 'Red Vial Nacional', enabled: true, visible: false, crs: 'EPSG:22175' },
     { id: 'red-vial-provincial', sourceId: 'redVialProvincial', displayName: 'Red Vial Provincial', enabled: true, visible: false, crs: 'EPSG:22175' },
     { id: 'comisarias', sourceId: 'comisarias', displayName: 'Comisarías', enabled: true, visible: false, crs: 'EPSG:4326' },
-    ];
+    { id: 'escuelas', sourceId: 'escuelas', displayName: 'Escuelas', enabled: true, visible: false, crs: 'EPSG:4326' },
+    { id: 'calles', sourceId: 'calles', displayName: 'Calles', enabled: true, visible: false, crs: 'EPSG:4326' },
+    { id: 'partidos', sourceId: 'partidos', displayName: 'Partidos', enabled: true, visible: false, crs: 'EPSG:4326' },
+];
 
     getAvailableOverlays(): OverlayMetadata[] {
         return this.overlayMetadata.filter(overlay => overlay.enabled);
