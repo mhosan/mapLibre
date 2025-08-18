@@ -2,6 +2,16 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.1.
 
+## Requisitos de instalación
+
+Antes de compilar o desarrollar, asegúrate de instalar las dependencias necesarias para el mapa:
+
+```bash
+npm install maplibre-gl @types/maplibre-gl --save
+```
+
+Esto es necesario para evitar errores de importación relacionados con 'maplibre-gl'.
+
 ## Development server
 
 To start a local development server, run:
