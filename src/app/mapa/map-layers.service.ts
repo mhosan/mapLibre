@@ -8,8 +8,8 @@ import { CoordinateSystemService } from '../services/coordinate-system.service';
 })
 export class MapLayersService {
 
-    constructor(private coordinateSystemService: CoordinateSystemService) {}
-    
+    constructor(private coordinateSystemService: CoordinateSystemService) { }
+
     getAvailableLayers(): LayerMetadata[] {
         return this.layerMetadata.filter(layer => layer.enabled);
     }
@@ -81,23 +81,35 @@ export class MapLayersService {
                 type: 'geojson',
                 data: 'assets/json/escuelas.geojson',
             },
-            calles:{
-                type: 'geojson',
-                data: 'assets/json/callesLPBssoEda.geojson',
-            },
-            partidos:{
+            partidos: {
                 type: 'geojson',
                 data: 'assets/json/partidos.geojson',
-            }
+            },
+            hidro: {
+                type: 'geojson',
+                data: 'assets/json/hidro.geojson',
+            },
+            localidades: {
+                type: 'geojson',
+                data: 'assets/json/localidades.geojson',
+            },
+            provincias: {
+                type: 'geojson',
+                data: 'assets/json/provincias.geojson',
+            },
+            rutas: {
+                type: 'geojson',
+                data: 'assets/json/rutas.geojson',
+            },
         };
     }
 
-    
+
     /****************************
      * paso 2: agregar layers
      ****************************/
     private getLayers(): LayerDefinition[] {
-    return [
+        return [
             {
                 id: 'osm-tiles',
                 type: 'raster',
@@ -141,16 +153,6 @@ export class MapLayersService {
             },
             // Capas vectoriales para overlays
             {
-                id: 'calles',
-                type: 'line',
-                source: 'calles',
-                layout: { visibility: 'none' },
-                paint: {
-                    'line-color': '#ff0000',
-                    'line-width': 2
-                }
-            },
-            {
                 id: 'comisarias',
                 type: 'circle',
                 source: 'comisarias',
@@ -184,6 +186,48 @@ export class MapLayersService {
                     'fill-opacity': 0.3,
                     'fill-outline-color': '#2255aa'
                 }
+            },
+            {
+                id: 'hidro',
+                type: 'line',
+                source: 'hidro',
+                layout: { visibility: 'none' },
+                paint: {
+                    'line-color': '#0000ff',
+                    'line-width': 2
+                }
+            },
+            {
+                id: 'localidades',
+                type: 'circle',
+                source: 'localidades',
+                layout: { visibility: 'none' },
+                paint: {
+                    'circle-radius': 6,
+                    'circle-color': 'rgba(44, 187, 0, 1)'
+
+                }
+            },
+            {
+                id: 'provincias',
+                type: 'fill',
+                source: 'provincias',
+                layout: { visibility: 'none' },
+                paint: {
+                    'fill-color': '#3388ff',
+                    'fill-opacity': 0.3,
+                    'fill-outline-color': '#aa2276ff'
+                }
+            },
+            {
+                id: 'rutas',
+                type: 'line',
+                source: 'rutas',
+                layout: { visibility: 'none' },
+                paint: {
+                    'line-color': '#ff0000',
+                    'line-width': 2
+                }   
             }
         ];
     }
@@ -205,11 +249,14 @@ export class MapLayersService {
      * overlays vectoriales
      ****************************/
     private readonly overlayMetadata: OverlayMetadata[] = [
-    { id: 'comisarias', sourceId: 'comisarias', displayName: 'Comisarías', enabled: true, visible: false, crs: 'EPSG:4326' },
-    { id: 'escuelas', sourceId: 'escuelas', displayName: 'Escuelas', enabled: true, visible: false, crs: 'EPSG:4326' },
-    { id: 'calles', sourceId: 'calles', displayName: 'Calles', enabled: true, visible: false, crs: 'EPSG:4326' },
-    { id: 'partidos', sourceId: 'partidos', displayName: 'Partidos', enabled: true, visible: false, crs: 'EPSG:4326' },
-];
+        { id: 'comisarias', sourceId: 'comisarias', displayName: 'Comisarías', enabled: true, visible: false, crs: 'EPSG:4326' },
+        { id: 'escuelas', sourceId: 'escuelas', displayName: 'Escuelas', enabled: true, visible: false, crs: 'EPSG:4326' },
+        { id: 'partidos', sourceId: 'partidos', displayName: 'Partidos', enabled: true, visible: false, crs: 'EPSG:4326' },
+        { id: 'hidro', sourceId: 'hidro', displayName: 'Hidrografía', enabled: true, visible: false, crs: 'EPSG:4326' },
+        { id: 'localidades', sourceId: 'localidades', displayName: 'Localidades', enabled: true, visible: false, crs: 'EPSG:4326' },
+        { id: 'provincias', sourceId: 'provincias', displayName: 'Provincias', enabled: true, visible: false, crs: 'EPSG:4326' },
+        { id: 'rutas', sourceId: 'rutas', displayName: 'Rutas', enabled: true, visible: false, crs: 'EPSG:4326' },
+    ];
 
     getAvailableOverlays(): OverlayMetadata[] {
         return this.overlayMetadata.filter(overlay => overlay.enabled);
