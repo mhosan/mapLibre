@@ -20,8 +20,7 @@ export class MapaComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.availableLayers = this.layersService.getAvailableLayers();
-    // Filtrar overlays para que no aparezcan rutas nacionales ni provinciales
-    this.availableOverlays = this.layersService.getAvailableOverlays().filter(o => o.id !== 'red-vial-nacional' && o.id !== 'red-vial-provincial');
+    this.availableOverlays = this.layersService.getAvailableOverlays();
     this.currentLayerId = this.layersService.getDefaultLayer();
     this.initializeMap();
   }

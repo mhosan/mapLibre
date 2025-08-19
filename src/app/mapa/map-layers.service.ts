@@ -205,8 +205,6 @@ export class MapLayersService {
      * overlays vectoriales
      ****************************/
     private readonly overlayMetadata: OverlayMetadata[] = [
-    { id: 'red-vial-nacional', sourceId: 'redVialNacional', displayName: 'Red Vial Nacional', enabled: true, visible: false, crs: 'EPSG:22175' },
-    { id: 'red-vial-provincial', sourceId: 'redVialProvincial', displayName: 'Red Vial Provincial', enabled: true, visible: false, crs: 'EPSG:22175' },
     { id: 'comisarias', sourceId: 'comisarias', displayName: 'Comisarías', enabled: true, visible: false, crs: 'EPSG:4326' },
     { id: 'escuelas', sourceId: 'escuelas', displayName: 'Escuelas', enabled: true, visible: false, crs: 'EPSG:4326' },
     { id: 'calles', sourceId: 'calles', displayName: 'Calles', enabled: true, visible: false, crs: 'EPSG:4326' },
