@@ -75,19 +75,19 @@ export class MapLayersService {
             // Fuentes GeoJSON para overlays
             comisarias: {
                 type: 'geojson',
-                data: 'assets/json/comisarias.geojson',
+                data: '/assets/json/comisarias.geojson',
             },
             escuelas: {
                 type: 'geojson',
-                data: 'assets/json/escuelas.geojson',
+                data: '/assets/json/escuelas.geojson',
             },
             calles:{
                 type: 'geojson',
-                data: 'assets/json/callesLPBssoEda.geojson',
+                data: '/assets/json/callesLPBssoEda.geojson',
             },
             partidos:{
                 type: 'geojson',
-                data: 'assets/json/partidos.geojson',
+                data: '/assets/json/partidos.geojson',
             }
         };
     }
