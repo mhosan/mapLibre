@@ -61,7 +61,7 @@
           },
           "configurations": {
             "production": {
-              "baseHref": "/",
+              "baseHref": "/mapLibre/",
               "budgets": [
                 {
                   "type": "initial",
