@@ -36,8 +36,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular/build:application", 
           "options": {
+            "outputPath": {
+              "base": "docs",
+              "browser": ""
+            },
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
@@ -57,6 +61,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/mapLibre/",
               "budgets": [
                 {
                   "type": "initial",
