@@ -2,10 +2,13 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { Map, NavigationControl, Popup, type StyleSpecification, type IControl } from 'maplibre-gl';
 import { MapLayersService } from './map-layers.service';
 import { type LayerMetadata, type OverlayMetadata } from '../models/map-layer.interfaces';
+import { ButtonModule } from 'primeng/button';
+
 
 @Component({
   selector: 'app-mapa',
   standalone: true,
+  imports: [ButtonModule],
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.css'
 })
