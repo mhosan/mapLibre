@@ -8,7 +8,7 @@
 /* Solo el fondo externo del menú transparente */
 .menu-overlay {
   position: absolute;
-  top: 240px;
+  top: 25px;
   left: 10px;
   z-index: 1000;
 }

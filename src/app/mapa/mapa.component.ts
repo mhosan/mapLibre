@@ -50,16 +50,11 @@ export class MapaComponent implements OnInit, OnDestroy {
         }))
       }
     ]
-
     this.initializeMap();
   }
 
-
-
-
   private async initializeMap(): Promise<void> {
     const style = this.layersService.getMapStyle();
-
     this.map = new Map({
       container: this.mapContainer.nativeElement,
       style,
@@ -94,110 +89,6 @@ export class MapaComponent implements OnInit, OnDestroy {
         .setHTML(html)
         .addTo(this.map!);
     });
-
-
-    // Add integrated MapLibre control with dropdown for base layers
-    const self = this;
-    let ctrlContainer: HTMLElement | undefined;
-    let currentDropdown: HTMLSelectElement | undefined;
-
-    const baseToggleControl: IControl = {
-      onAdd() {
-        const container = document.createElement('div');
-        container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
-
-        const select = document.createElement('select');
-        select.title = 'Seleccionar capa base';
-        select.setAttribute('aria-label', 'Seleccionar capa base');
-
-        // Options for the dropdown
-        const options = self.availableLayers.map(layer => ({
-          value: layer.id,
-          text: layer.displayName
-        }));
-
-        options.forEach(opt => {
-          const option = document.createElement('option');
-          option.value = opt.value;
-          option.textContent = opt.text;
-          option.selected = opt.value === self.currentLayerId;
-          select.appendChild(option);
-        });
-
-        // Styling for dropdown
-        select.style.width = 'auto';
-        select.style.minWidth = '140px';
-        select.style.padding = '4px 8px';
-        select.style.fontSize = '12px';
-        select.style.border = 'none';
-        select.style.background = 'white';
-        select.style.cursor = 'pointer';
-
-        select.addEventListener('change', () => {
-          const nextLayerId = select.value;
-          self.switchToLayer(nextLayerId);
-        });
-
-        container.appendChild(select);
-
-        // Agregar checkboxes para overlays
-        if (self.availableOverlays.length > 0) {
-          const overlayContainer = document.createElement('div');
-          overlayContainer.style.marginTop = '8px';
-          overlayContainer.style.padding = '4px 8px';
-          overlayContainer.style.background = 'white';
-          overlayContainer.style.borderTop = '1px solid #ccc';
-
-          const overlayTitle = document.createElement('div');
-          overlayTitle.textContent = 'Capas superpuestas:';
-          overlayTitle.style.fontSize = '11px';
-          overlayTitle.style.fontWeight = 'bold';
-          overlayTitle.style.marginBottom = '4px';
-          overlayContainer.appendChild(overlayTitle);
-
-          self.availableOverlays.forEach(overlay => {
-            const checkboxContainer = document.createElement('div');
-            checkboxContainer.style.display = 'flex';
-            checkboxContainer.style.alignItems = 'center';
-            checkboxContainer.style.marginBottom = '2px';
-
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = `overlay-${overlay.id}`;
-            checkbox.checked = overlay.visible;
-            checkbox.style.marginRight = '6px';
-
-            const label = document.createElement('label');
-            label.setAttribute('for', `overlay-${overlay.id}`);
-            label.textContent = overlay.displayName;
-            label.style.fontSize = '11px';
-            label.style.cursor = 'pointer';
-
-            checkbox.addEventListener('change', () => {
-              self.toggleOverlay(overlay.id, checkbox.checked);
-            });
-
-            checkboxContainer.appendChild(checkbox);
-            checkboxContainer.appendChild(label);
-            overlayContainer.appendChild(checkboxContainer);
-          });
-
-          container.appendChild(overlayContainer);
-        }
-
-        ctrlContainer = container;
-        currentDropdown = select;
-        return container;
-      },
-      onRemove() {
-        if (ctrlContainer && ctrlContainer.parentNode) {
-          ctrlContainer.parentNode.removeChild(ctrlContainer);
-        }
-        ctrlContainer = undefined;
-        currentDropdown = undefined;
-      },
-    };
-    this.map.addControl(baseToggleControl, 'top-left');
   }
 
   switchToLayer(layerId: string) {

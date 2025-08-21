@@ -1,5 +1,4 @@
-/* Theme PrimeUIX se aplica solo por configuración, no se importa CSS global */
-@import 'primeicons/primeicons.css';
+
 /* You can add global styles to this file, y también importar otros archivos de estilos */
 @import 'maplibre-gl/dist/maplibre-gl.css';
 
