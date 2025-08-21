@@ -37,9 +37,6 @@ yarn-error.log
 testem.log
 /typings
 
-# Evitar archivos grandes
-docs/assets/json/indecCuadras.geojson
-
 # System files
 .DS_Store
 Thumbs.db
