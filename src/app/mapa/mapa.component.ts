@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Map, NavigationControl, Popup, type StyleSpecification, type IControl } from 'maplibre-gl';
+import { Map, NavigationControl, Popup, AttributionControl, type StyleSpecification, type IControl } from 'maplibre-gl';
 import { MapLayersService } from './map-layers.service';
 import { type LayerMetadata, type OverlayMetadata } from '../models/map-layer.interfaces';
 import { ButtonModule } from 'primeng/button';
@@ -36,9 +36,11 @@ export class MapaComponent implements OnInit, OnDestroy {
       style,
       center: [-58.3816, -34.6037],
       zoom: 5,
+      attributionControl: false,
     });
 
     this.map.addControl(new NavigationControl({ visualizePitch: true }), 'top-right');
+    this.map.addControl(new AttributionControl(), 'bottom-left');
 
     // Evento click general para cualquier capa vectorial visible
     this.map.on('click', (e) => {
