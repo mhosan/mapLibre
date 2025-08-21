@@ -12,12 +12,9 @@ npm install maplibre-gl @types/maplibre-gl --save
 
 Esto es necesario para evitar errores de importación relacionados con 'maplibre-gl'.
 
-## Development server
-
-To start a local development server, run:
-
+## PrimeNG:
 ```bash
-n
+npm install primeng @primeuix/themes primeicons primeflex --save 
 ```
 
 ## Building
