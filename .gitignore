@@ -1,4 +1,4 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+git filter-repo --path docs/assets/json/indecCuadras.geojson --invert-pathsgit filter-repo --path docs/assets/json/indecCuadras.geojson --invert-paths# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
 # Compiled output
 /dist
@@ -36,6 +36,9 @@ yarn-error.log
 /libpeerconnection.log
 testem.log
 /typings
+
+# Evitar archivos grandes
+docs/assets/json/indecCuadras.geojson
 
 # System files
 .DS_Store
