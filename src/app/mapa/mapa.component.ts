@@ -3,15 +3,18 @@ import { Map, NavigationControl, Popup, AttributionControl, type StyleSpecificat
 import { MapLayersService } from './map-layers.service';
 import { type LayerMetadata, type OverlayMetadata } from '../models/map-layer.interfaces';
 import { ButtonModule } from 'primeng/button';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { MenuItem } from 'primeng/api';
 
 
 @Component({
   selector: 'app-mapa',
   standalone: true,
-  imports: [ButtonModule],
+  imports: [ButtonModule, PanelMenuModule],
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.css'
 })
+
 export class MapaComponent implements OnInit, OnDestroy {
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef<HTMLDivElement>;
   private map?: Map;
@@ -20,13 +23,95 @@ export class MapaComponent implements OnInit, OnDestroy {
   private availableOverlays: OverlayMetadata[] = [];
 
   constructor(private layersService: MapLayersService) { }
-
+  items!: MenuItem[];
   ngOnInit(): void {
     this.availableLayers = this.layersService.getAvailableLayers();
     this.availableOverlays = this.layersService.getAvailableOverlays();
     this.currentLayerId = this.layersService.getDefaultLayer();
+    this.items = [
+      {
+        label: 'Files',
+        icon: 'pi pi-file',
+        items: [
+          {
+            label: 'Documents',
+            icon: 'pi pi-file',
+            items: [
+              {
+                label: 'Invoices',
+                icon: 'pi pi-file-pdf',
+                items: [
+                  {
+                    label: 'Pending',
+                    icon: 'pi pi-stop'
+                  },
+                  {
+                    label: 'Paid',
+                    icon: 'pi pi-check-circle'
+                  }
+                ]
+              },
+              {
+                label: 'Clients',
+                icon: 'pi pi-users'
+              }
+            ]
+          },
+          {
+            label: 'Images',
+            icon: 'pi pi-image',
+            items: [
+              {
+                label: 'Logos',
+                icon: 'pi pi-image'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        label: 'Cloud',
+        icon: 'pi pi-cloud',
+        items: [
+          {
+            label: 'Upload',
+            icon: 'pi pi-cloud-upload'
+          },
+          {
+            label: 'Download',
+            icon: 'pi pi-cloud-download'
+          },
+          {
+            label: 'Sync',
+            icon: 'pi pi-refresh'
+          }
+        ]
+      },
+      {
+        label: 'Devices',
+        icon: 'pi pi-desktop',
+        items: [
+          {
+            label: 'Phone',
+            icon: 'pi pi-mobile'
+          },
+          {
+            label: 'Desktop',
+            icon: 'pi pi-desktop'
+          },
+          {
+            label: 'Tablet',
+            icon: 'pi pi-tablet'
+          }
+        ]
+      }
+    ]
+
     this.initializeMap();
   }
+
+
+
 
   private async initializeMap(): Promise<void> {
     const style = this.layersService.getMapStyle();

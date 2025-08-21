@@ -1,3 +1,18 @@
+/* Fondo blanco siempre visible en los headers del PanelMenu */
+:host .mapa-overlay-layout {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Solo el fondo externo del menú transparente */
+.menu-overlay {
+  position: absolute;
+  top: 240px;
+  left: 10px;
+  z-index: 1000;
+}
+
 :host {
   display: block;
   width: 100%;
