@@ -1,6 +1,23 @@
 <div class="mapa-overlay-layout">
     <div #mapContainer class="map-container"></div>
     <div class="menu-overlay">
-        <!-- Aquí puedes agregar un menú alternativo si lo deseas -->
+        <div class="btn-group me-3">
+	<div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+		<button type="button" class="btn btn-outline-danger" ngbDropdownToggle>Capas base</button>
+		<div class="dropdown-menu" ngbDropdownMenu>
+			<button ngbDropdownItem>One</button>
+			<button ngbDropdownItem>Two</button>
+			<button ngbDropdownItem>Four!</button>
+		</div>
+	</div>
+	<div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+		<button type="button" class="btn btn-outline-success" ngbDropdownToggle>Capas superpuestas</button>
+		<div class="dropdown-menu" ngbDropdownMenu>
+			<button ngbDropdownItem>One</button>
+			<button ngbDropdownItem>Two</button>
+			<button ngbDropdownItem>Four!</button>
+		</div>
+	</div>
+</div>
     </div>
 </div>

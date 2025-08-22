@@ -2,12 +2,12 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { Map, NavigationControl, Popup, AttributionControl, type StyleSpecification, type IControl } from 'maplibre-gl';
 import { MapLayersService } from './map-layers.service';
 import { type LayerMetadata, type OverlayMetadata } from '../models/map-layer.interfaces';
-
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-mapa',
   standalone: true,
-  // ...otros imports necesarios
+  imports: [NgbDropdownModule],
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.css'
 })
