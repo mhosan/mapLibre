@@ -12,10 +12,6 @@ npm install maplibre-gl @types/maplibre-gl --save
 
 Esto es necesario para evitar errores de importación relacionados con 'maplibre-gl'.
 
-## PrimeNG:
-```bash
-npm install primeng @primeuix/themes primeicons primeflex --save 
-```
 
 ## Building
 

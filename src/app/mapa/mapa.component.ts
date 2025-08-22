@@ -2,15 +2,12 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { Map, NavigationControl, Popup, AttributionControl, type StyleSpecification, type IControl } from 'maplibre-gl';
 import { MapLayersService } from './map-layers.service';
 import { type LayerMetadata, type OverlayMetadata } from '../models/map-layer.interfaces';
-import { ButtonModule } from 'primeng/button';
-import { PanelMenuModule } from 'primeng/panelmenu';
-import { MenuItem } from 'primeng/api';
 
 
 @Component({
   selector: 'app-mapa',
   standalone: true,
-  imports: [ButtonModule, PanelMenuModule],
+  // ...otros imports necesarios
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.css'
 })
@@ -23,12 +20,12 @@ export class MapaComponent implements OnInit, OnDestroy {
   private availableOverlays: OverlayMetadata[] = [];
 
   constructor(private layersService: MapLayersService) { }
-  items!: MenuItem[];
+  // items: MenuItem[]; // Eliminado PrimeNG
   ngOnInit(): void {
     this.availableLayers = this.layersService.getAvailableLayers();
     this.availableOverlays = this.layersService.getAvailableOverlays();
     this.currentLayerId = this.layersService.getDefaultLayer();
-    this.items = [
+    /* this.items = [
       {
         label: 'Capas base',
         icon: 'pi pi-map',
@@ -49,7 +46,7 @@ export class MapaComponent implements OnInit, OnDestroy {
           command: () => this.toggleOverlay(overlay.id, !overlay.visible)
         }))
       }
-    ]
+    ] */
     this.initializeMap();
   }
 
