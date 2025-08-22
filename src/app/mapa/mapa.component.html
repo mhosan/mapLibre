@@ -5,17 +5,17 @@
 	<div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
 		<button type="button" class="btn btn-outline-danger" ngbDropdownToggle>Capas base</button>
 		<div class="dropdown-menu" ngbDropdownMenu>
-			<button ngbDropdownItem>One</button>
-			<button ngbDropdownItem>Two</button>
-			<button ngbDropdownItem>Four!</button>
+			<button ngbDropdownItem *ngFor="let layer of availableLayers" (click)="switchToLayer(layer.id)">
+				{{ layer.displayName }}
+			</button>
 		</div>
 	</div>
 	<div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
 		<button type="button" class="btn btn-outline-success" ngbDropdownToggle>Capas superpuestas</button>
 		<div class="dropdown-menu" ngbDropdownMenu>
-			<button ngbDropdownItem>One</button>
-			<button ngbDropdownItem>Two</button>
-			<button ngbDropdownItem>Four!</button>
+			<button ngbDropdownItem *ngFor="let overlay of availableOverlays" (click)="toggleOverlay(overlay.id, !overlay.visible)">
+				{{ overlay.displayName }}
+			</button>
 		</div>
 	</div>
 </div>

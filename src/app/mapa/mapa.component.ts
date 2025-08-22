@@ -3,11 +3,12 @@ import { Map, NavigationControl, Popup, AttributionControl, type StyleSpecificat
 import { MapLayersService } from './map-layers.service';
 import { type LayerMetadata, type OverlayMetadata } from '../models/map-layer.interfaces';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-mapa',
   standalone: true,
-  imports: [NgbDropdownModule],
+  imports: [CommonModule, NgbDropdownModule],
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.css'
 })
@@ -16,8 +17,8 @@ export class MapaComponent implements OnInit, OnDestroy {
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef<HTMLDivElement>;
   private map?: Map;
   private currentLayerId: string = '';
-  private availableLayers: LayerMetadata[] = [];
-  private availableOverlays: OverlayMetadata[] = [];
+  public availableLayers: LayerMetadata[] = [];
+  public availableOverlays: OverlayMetadata[] = [];
 
   constructor(private layersService: MapLayersService) { }
   // items: MenuItem[]; // Eliminado PrimeNG
