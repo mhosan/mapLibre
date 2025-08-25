@@ -4,6 +4,7 @@ import { MapLayersService } from './map-layers.service';
 import { type LayerMetadata, type OverlayMetadata } from '../models/map-layer.interfaces';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-mapa',
@@ -20,36 +21,21 @@ export class MapaComponent implements OnInit, OnDestroy {
   public availableLayers: LayerMetadata[] = [];
   public availableOverlays: OverlayMetadata[] = [];
 
-  constructor(private layersService: MapLayersService) { }
-  // items: MenuItem[]; // Eliminado PrimeNG
+  constructor(private layersService: MapLayersService, private http: HttpClient) { }
+  
   ngOnInit(): void {
     this.availableLayers = this.layersService.getAvailableLayers();
     this.availableOverlays = this.layersService.getAvailableOverlays();
     this.currentLayerId = this.layersService.getDefaultLayer();
-    /* this.items = [
-      {
-        label: 'Capas base',
-        icon: 'pi pi-map',
-        items: this.availableLayers.map(layer => ({
-          label: layer.displayName,
-          icon: 'pi pi-map',
-          id: layer.id,
-          command: () => this.switchToLayer(layer.id)
-        }))
-      },
-      {
-        label: 'Capas superpuestas',
-        icon: 'pi pi-images',
-        items: this.availableOverlays.map(overlay => ({
-          label: overlay.displayName,
-          icon: 'pi pi-image',
-          id: overlay.id,
-          command: () => this.toggleOverlay(overlay.id, !overlay.visible)
-        }))
-      }
-    ] */
     this.initializeMap();
   }
+
+probarMock() {
+  this.http.get<{ mensaje: string }>('/api/post').subscribe({
+    next: (resp) => alert('Respuesta del mock: ' + resp.mensaje),
+    error: (err) => alert('Error: ' + JSON.stringify(err))
+  });
+}
 
   private async initializeMap(): Promise<void> {
     const style = this.layersService.getMapStyle();
