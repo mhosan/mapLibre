@@ -14,7 +14,7 @@ npm install maplibre-gl @types/maplibre-gl --save
 ```bash
 ng add @ng-bootstrap/ng-bootstrap
 ```
-# Iconos en la aplicación
+### Iconos en la aplicación
  - Este proyecto utiliza [Bootstrap Icons](https://icons.getbootstrap.com/) para los iconos en la interfaz de usuario.
  - Los iconos se cargan automáticamente agregando la ruta `node_modules/bootstrap-icons/font/bootstrap-icons.min.css` en la sección `styles` de `angular.json`.
  - No es necesario modificar el `index.html` ni usar un CDN para los iconos.
