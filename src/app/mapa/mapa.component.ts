@@ -77,11 +77,13 @@ export class MapaComponent implements OnInit, OnDestroy {
       if (!features.length) return;
       const feature = features[0];
       const properties = feature.properties;
-      let html = '<table>';
-      for (const key in properties) {
+      const keys = Object.keys(properties);
+      const maxItems = 5;
+      let html = `<div style="max-height: 180px; overflow-y: auto;"><table style="margin-bottom:0;">`;
+      keys.forEach(key => {
         html += `<tr><th style="text-align:left; padding-right:8px;">${key}</th><td>${properties[key]}</td></tr>`;
-      }
-      html += '</table>';
+      });
+      html += '</table></div>';
       new Popup()
         .setLngLat(e.lngLat)
         .setHTML(html)

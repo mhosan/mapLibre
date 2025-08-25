@@ -236,26 +236,26 @@ export class MapLayersService {
     * paso 3 agregar metadatos
     ****************************/
     private readonly layerMetadata: LayerMetadata[] = [
-        { id: 'osm-tiles', sourceId: 'osm', displayName: 'OpenStreetMap', enabled: true },
-        { id: 'esri-satellite-tiles', sourceId: 'esriWorldImagery', displayName: 'Satélite (Esri)', enabled: true },
-        { id: 'argenmap-tiles', sourceId: 'argenMap', displayName: 'ArgenMap (IGN)', enabled: true },
-        { id: 'google-maps-tiles', sourceId: 'googleMaps', displayName: 'Google Maps', enabled: true },
-        { id: 'google-hybrid-tiles', sourceId: 'googleHybrid', displayName: 'Google Híbrido', enabled: true },
-        { id: 'google-satellite-tiles', sourceId: 'googleSatellite', displayName: 'Google Satélite', enabled: true },
-        { id: 'esri-transportation-tiles', sourceId: 'esriTransportation', displayName: 'Esri Transporte', enabled: true },
+        { id: 'osm-tiles', sourceId: 'osm', displayName: 'OpenStreetMap (serv.teselas raster)', enabled: true },
+        { id: 'esri-satellite-tiles', sourceId: 'esriWorldImagery', displayName: 'Satélite Esri  (serv.teselas raster)', enabled: true },
+        { id: 'argenmap-tiles', sourceId: 'argenMap', displayName: 'ArgenMap IGN (serv.teselas raster)', enabled: true },
+        { id: 'google-maps-tiles', sourceId: 'googleMaps', displayName: 'Google Maps (serv.teselas raster)', enabled: true },
+        { id: 'google-hybrid-tiles', sourceId: 'googleHybrid', displayName: 'Google Híbrido (serv.teselas raster)', enabled: true },
+        { id: 'google-satellite-tiles', sourceId: 'googleSatellite', displayName: 'Google Satélite (serv.teselas raster)', enabled: true },
+        { id: 'esri-transportation-tiles', sourceId: 'esriTransportation', displayName: 'Esri Transporte (serv.teselas raster)', enabled: true },
     ];
 
     /****************************
      * overlays vectoriales
      ****************************/
     private readonly overlayMetadata: OverlayMetadata[] = [
-        { id: 'comisarias', sourceId: 'comisarias', displayName: 'Comisarías', enabled: true, visible: false, crs: 'EPSG:4326' },
-        { id: 'escuelas', sourceId: 'escuelas', displayName: 'Escuelas', enabled: true, visible: false, crs: 'EPSG:4326' },
-        { id: 'partidos', sourceId: 'partidos', displayName: 'Partidos', enabled: true, visible: false, crs: 'EPSG:4326' },
-        { id: 'hidro', sourceId: 'hidro', displayName: 'Hidrografía', enabled: true, visible: false, crs: 'EPSG:4326' },
-        { id: 'localidades', sourceId: 'localidades', displayName: 'Localidades', enabled: true, visible: false, crs: 'EPSG:4326' },
-        { id: 'provincias', sourceId: 'provincias', displayName: 'Provincias', enabled: true, visible: false, crs: 'EPSG:4326' },
-        { id: 'rutas', sourceId: 'rutas', displayName: 'Rutas', enabled: true, visible: false, crs: 'EPSG:4326' },
+        { id: 'comisarias', sourceId: 'comisarias', displayName: 'Comisarías (geoJson)', enabled: true, visible: false, crs: 'EPSG:4326' },
+        { id: 'escuelas', sourceId: 'escuelas', displayName: 'Escuelas (geoJson)', enabled: true, visible: false, crs: 'EPSG:4326' },
+        { id: 'partidos', sourceId: 'partidos', displayName: 'Partidos (geoJson)', enabled: true, visible: false, crs: 'EPSG:4326' },
+        { id: 'hidro', sourceId: 'hidro', displayName: 'Hidrografía (geoJson)', enabled: true, visible: false, crs: 'EPSG:4326' },
+        { id: 'localidades', sourceId: 'localidades', displayName: 'Localidades (geoJson)', enabled: true, visible: false, crs: 'EPSG:4326' },
+        { id: 'provincias', sourceId: 'provincias', displayName: 'Provincias (geoJson)', enabled: true, visible: false, crs: 'EPSG:4326' },
+        { id: 'rutas', sourceId: 'rutas', displayName: 'Rutas (geoJson)', enabled: true, visible: false, crs: 'EPSG:4326' },
     ];
 
     getAvailableOverlays(): OverlayMetadata[] {

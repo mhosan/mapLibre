@@ -1,3 +1,7 @@
+/* Reducir tipografía del dropdown menu */
+.menu-overlay .dropdown-menu {
+  font-size: 0.75em;
+}
 /* Fondo blanco siempre visible en los headers del PanelMenu */
 :host .mapa-overlay-layout {
   position: relative;
