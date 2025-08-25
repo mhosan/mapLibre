@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Map, NavigationControl, Popup, AttributionControl, type StyleSpecification, type IControl } from 'maplibre-gl';
-import { MapLayersService } from './map-layers.service';
-import { type LayerMetadata, type OverlayMetadata } from '../models/map-layer.interfaces';
+import { MapLayersService } from '../services/map-layers.service';
+import { type LayerMetadata, type OverlayMetadata } from '../../../../shared/models/map-layer.interfaces';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';

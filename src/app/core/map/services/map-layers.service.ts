@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { type StyleSpecification } from 'maplibre-gl';
-import { LayerDefinition, RasterSourceDefinition, GeoJSONSourceDefinition, LayerMetadata, OverlayMetadata } from '../models/map-layer.interfaces';
-import { CoordinateSystemService } from '../services/coordinate-system.service';
+import { LayerDefinition, RasterSourceDefinition, GeoJSONSourceDefinition, LayerMetadata, OverlayMetadata } from '../../../../shared/models/map-layer.interfaces';
+import { CoordinateSystemService } from './coordinate-system.service';
 
 @Injectable({
     providedIn: 'root'

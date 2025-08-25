@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 // import { RouterOutlet } from '@angular/router';
-import { MapaComponent } from './mapa/mapa.component';
+import { MapaComponent } from './core/map/components/mapa.component';
 import { HttpClientModule } from '@angular/common/http';
 
 
