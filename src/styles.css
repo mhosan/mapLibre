@@ -1,6 +1,7 @@
 
 /* You can add global styles to this file, y también importar otros archivos de estilos */
 @import "tailwindcss";
+@plugin "daisyui";
 @import 'maplibre-gl/dist/maplibre-gl.css';
 
 /* Optional: basic reset for full-viewport apps */
