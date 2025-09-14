@@ -32,7 +32,7 @@ En el archivo src/style.css agregar:
 ```css
 @plugin "daisyui";
 ```
-Crear un archivo setting.json en la carpeta .vscode con el siguiente contenido:
+Crear un archivo settings.json en la carpeta .vscode con el siguiente contenido:
 ```json
 {
   "files.associations": {
