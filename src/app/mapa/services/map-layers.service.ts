@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { type StyleSpecification } from 'maplibre-gl';
-import { LayerDefinition, RasterSourceDefinition, GeoJSONSourceDefinition, LayerMetadata, OverlayMetadata } from '../models/map-layer.interfaces';
-import { CoordinateSystemService } from '../services/coordinate-system.service';
+import { LayerDefinition, RasterSourceDefinition, GeoJSONSourceDefinition, LayerMetadata, OverlayMetadata } from '../../models/map-layer.interfaces';
+import { CoordinateSystemService } from '../../core/services/coordinate-system.service';
 
 @Injectable({
     providedIn: 'root'
@@ -227,7 +227,7 @@ export class MapLayersService {
                 paint: {
                     'line-color': '#ff0000',
                     'line-width': 2
-                }   
+                }
             }
         ];
     }

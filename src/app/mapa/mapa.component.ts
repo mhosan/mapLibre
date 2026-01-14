@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Map, NavigationControl, Popup, AttributionControl, type StyleSpecification, type IControl } from 'maplibre-gl';
-import { MapLayersService } from './map-layers.service';
+import { MapLayersService } from './services/map-layers.service';
 import { type LayerMetadata, type OverlayMetadata } from '../models/map-layer.interfaces';
 import { CommonModule } from '@angular/common';
 
