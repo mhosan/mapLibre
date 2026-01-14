@@ -20,43 +20,24 @@ export class MapaComponent implements OnInit, OnDestroy {
   public availableOverlays: OverlayMetadata[] = [];
 
   constructor(private layersService: MapLayersService) { }
-  // items: MenuItem[]; // Eliminado PrimeNG
+  
   ngOnInit(): void {
     this.availableLayers = this.layersService.getAvailableLayers();
     this.availableOverlays = this.layersService.getAvailableOverlays();
     this.currentLayerId = this.layersService.getDefaultLayer();
-    /* this.items = [
-      {
-        label: 'Capas base',
-        icon: 'pi pi-map',
-        items: this.availableLayers.map(layer => ({
-          label: layer.displayName,
-          icon: 'pi pi-map',
-          id: layer.id,
-          command: () => this.switchToLayer(layer.id)
-        }))
-      },
-      {
-        label: 'Capas superpuestas',
-        icon: 'pi pi-images',
-        items: this.availableOverlays.map(overlay => ({
-          label: overlay.displayName,
-          icon: 'pi pi-image',
-          id: overlay.id,
-          command: () => this.toggleOverlay(overlay.id, !overlay.visible)
-        }))
-      }
-    ] */
     this.initializeMap();
   }
 
+  /********************************************************************
+   * Inicializa el mapa con el estilo y las capas predeterminadas.
+  ********************************************************************/
   private async initializeMap(): Promise<void> {
     const style = this.layersService.getMapStyle();
     this.map = new Map({
       container: this.mapContainer.nativeElement,
       style,
       center: [-58.3816, -34.6037],
-      zoom: 5,
+      zoom: 8,
       attributionControl: false,
     });
 

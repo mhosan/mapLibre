@@ -1,64 +1,36 @@
-/* Reducir tipografía del dropdown menu */
-.menu-overlay .dropdown-menu {
-  font-size: 0.75em;
-}
-/* Fondo blanco siempre visible en los headers del PanelMenu */
-:host .mapa-overlay-layout {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
+:host {
+  display: block;
 }
 
-/* Solo el fondo externo del menú transparente */
+/* Solo el posicionamiento específico del menú sobre el mapa */
 .menu-overlay {
-  position: absolute;
   top: 25px;
   left: 10px;
   z-index: 1000;
 }
 
-:host {
-  display: block;
-  width: 100%;
-  height: 100vh;
-}
-
-.map-container {
-  width: 100%;
-  height: 100%;
-}
-
-/* Personalización del popup de MapLibre (ahora scoped al componente) */
+/* Personalización del popup de MapLibre (Estética Premium Dark) */
 :host ::ng-deep .maplibregl-popup-content {
   background: #23272f;
   color: #fff;
   border-radius: 10px;
   font-size: 1.1em;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
-  padding: 16px 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+  padding: 30px 25px;
   max-width: 740px;
   min-width: 420px;
   overflow-x: auto;
-  word-break: break-word;
 }
-:host ::ng-deep .maplibregl-popup-tip {
-  border-top-color: #23272f !important;
-}
-:host ::ng-deep .maplibregl-popup-content table {
-  width: 100%;
-  border-collapse: collapse;
-}
+
 :host ::ng-deep .maplibregl-popup-content th,
 :host ::ng-deep .maplibregl-popup-content td {
   padding: 4px 8px;
   border-bottom: 1px solid #444;
 }
+
 :host ::ng-deep .maplibregl-popup-content th {
   font-weight: bold;
   color: #90caf9;
   background: transparent;
-}
-:host ::ng-deep .maplibregl-popup-content tr:last-child td {
-  border-bottom: none;
 }
 

@@ -1,30 +1,43 @@
-<div class="mapa-overlay-layout">
-    <div #mapContainer class="map-container"></div>
-    <div class="menu-overlay">
-        <div>
-            <h1 class="fs-3 fw-bold text-decoration-underline bg-warning">hola mundo</h1>
-            <button class="btn btn-lg btn-primary">Esto es Bootstrap</button>
-            <details role="group">
-                <summary>
-                    Capas base
-                </summary>
-                <div>
-                    <button *ngFor="let layer of availableLayers" (click)="switchToLayer(layer.id)">
-                        {{ layer.displayName }}
-                    </button>
-                </div>
-            </details>
-            <details role="group">
-                <summary>
-                    Capas superpuestas
-                </summary>
-                <div>
-                    <button *ngFor="let overlay of availableOverlays"
-                        (click)="toggleOverlay(overlay.id, !overlay.visible)">
-                        {{ overlay.displayName }}
-                    </button>
-                </div>
-            </details>
-        </div>
+<div class="d-flex flex-column vh-100 vw-100 overflow-hidden">
+    <div class="p-2 bg-light border-bottom">
+        <ul class="nav nav-pills">
+            <!-- <li class="nav-item">
+                <a class="nav-link " aria-current="page" href="#">Active</a>
+            </li> -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                    aria-expanded="false">Capas base</a>
+                <ul class="dropdown-menu">
+                    <li *ngFor="let layer of availableLayers">
+                        <a class="dropdown-item" href="#" (click)="$event.preventDefault(); switchToLayer(layer.id)">
+                            {{ layer.displayName }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                    aria-expanded="false">Capas overlay</a>
+                <ul class="dropdown-menu">
+                    <li *ngFor="let overlay of availableOverlays">
+                        <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                            (click)="$event.preventDefault(); $event.stopPropagation(); toggleOverlay(overlay.id, !overlay.visible)">
+                            {{ overlay.displayName }}
+                            <span [class.d-none]="!overlay.visible" class="badge bg-success rounded-pill">Visible</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!-- li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            </li> -->
+        </ul>
     </div>
+    <div class="flex-grow-1 position-relative">
+        <div #mapContainer class="w-100 h-100"></div>
+    </div>
+
 </div>
