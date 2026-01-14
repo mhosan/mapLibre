@@ -42,8 +42,6 @@ npm install
 npm run build
 ```
 
-Si quieres que abra la Pull Request con checklist y pruebas o que revierta algún cambio, dímelo.
-
 
 ## Despliegue
 
