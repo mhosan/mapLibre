@@ -8,36 +8,22 @@ Este proyecto fué generado con [Angular CLI](https://github.com/angular/angular
 ```bash
 npm install maplibre-gl @types/maplibre-gl --save
 ```
-- Tailwind:
+- Bootstrap:
 ```bash
-npm install tailwindcss @tailwindcss/postcss postcss --force
+npm install bootstrap@latest
 ```
-En la raiz del proyecto agregar un archivo .postcssrc.json con el siguiente contenido:
-```json
-{
-  "plugins": {
-    "@tailwindcss/postcss": {}
-  }
-}
-```
-En el archivo src/style.css agregar:
+En el archivo `src/styles.css` agregar:
 ```css
-@import "tailwindcss";
+@import "bootstrap/dist/css/bootstrap.min.css";
 ```
-- DaisyUI:
+( Opcional ) Si vas a usar componentes JS de Bootstrap instala `@popperjs/core`:
 ```bash
-npm install daisyui@latest --force
+npm install @popperjs/core
 ```
-En el archivo src/style.css agregar:
-```css
-@plugin "daisyui";
-```
-Crear un archivo settings.json en la carpeta .vscode con el siguiente contenido:
-```json
-{
-  "files.associations": {
-    "*.css": "tailwindcss"
-  }
-}
-```
+
+**Nota:** Este proyecto fue migrado de Tailwind/DaisyUI a Bootstrap; se eliminaron las dependencias de Tailwind y DaisyUI y ahora se importa Bootstrap desde `src/styles.css`. Si clonas el repositorio, ejecuta `npm install` antes de levantar la app.```
+
+## Despliegue
+
+El deploy se realiza automáticamente con el push a GitHub (GitHub Pages). La URL final es: https://mhosan.github.io/mapLibre/
 
