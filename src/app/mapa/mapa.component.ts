@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Map, NavigationControl, Popup, AttributionControl, type StyleSpecification, type IControl } from 'maplibre-gl';
 import { MapLayersService } from './services/map-layers.service';
+import { MapPopupService } from './services/map-popup.service';
 import { type LayerMetadata, type OverlayMetadata } from '../models/map-layer.interfaces';
 import { CommonModule } from '@angular/common';
 
@@ -19,8 +20,11 @@ export class MapaComponent implements OnInit, OnDestroy {
   public availableLayers: LayerMetadata[] = [];
   public availableOverlays: OverlayMetadata[] = [];
 
-  constructor(private layersService: MapLayersService) { }
-  
+  constructor(
+    private layersService: MapLayersService,
+    private popupService: MapPopupService
+  ) { }
+
   ngOnInit(): void {
     this.availableLayers = this.layersService.getAvailableLayers();
     this.availableOverlays = this.layersService.getAvailableOverlays();
@@ -53,20 +57,19 @@ export class MapaComponent implements OnInit, OnDestroy {
 
       if (vectorLayerIds.length === 0) return;
 
+      // Buscar elementos de las capas vectoriales en la posición del clic, obtener las propiedades del primer
+      // elemento encontrado y mostrarlo en un popup.
       const features = this.map!.queryRenderedFeatures(e.point, { layers: vectorLayerIds });
       if (!features.length) return;
-      const feature = features[0];
-      const properties = feature.properties;
-      const keys = Object.keys(properties);
-      const maxItems = 5;
-      let html = `<div style="max-height: 180px; overflow-y: auto;"><table style="margin-bottom:0;">`;
-      keys.forEach(key => {
-        html += `<tr><th style="text-align:left; padding-right:8px;">${key}</th><td>${properties[key]}</td></tr>`;
-      });
-      html += '</table></div>';
+
+      // Extraer propiedades del primer elemento encontrado
+      const { properties } = features[0];
+      if (!properties) return;
+
+      // Configurar y añadir el popup al mapa con la información procesada por el servicio
       new Popup()
         .setLngLat(e.lngLat)
-        .setHTML(html)
+        .setHTML(this.popupService.getFeaturePopupHtml(properties))
         .addTo(this.map!);
     });
   }
