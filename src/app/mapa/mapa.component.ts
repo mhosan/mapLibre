@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Map, NavigationControl, Popup, AttributionControl, type StyleSpecification, type IControl } from 'maplibre-gl';
 import { MapLayersService } from './services/map-layers.service';
-import { MapPopupService } from './services/map-popup.service';
 import { MapInteractionService } from './services/map-interaction.service';
 import { type LayerMetadata, type OverlayMetadata } from '../models/map-layer.interfaces';
 import { CommonModule } from '@angular/common';
@@ -23,7 +22,6 @@ export class MapaComponent implements OnInit, OnDestroy {
 
   constructor(
     private layersService: MapLayersService,
-    private popupService: MapPopupService,
     private interactionService: MapInteractionService
   ) { }
 
