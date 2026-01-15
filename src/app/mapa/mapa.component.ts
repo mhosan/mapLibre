@@ -2,6 +2,7 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { Map, NavigationControl, Popup, AttributionControl, type StyleSpecification, type IControl } from 'maplibre-gl';
 import { MapLayersService } from './services/map-layers.service';
 import { MapPopupService } from './services/map-popup.service';
+import { MapInteractionService } from './services/map-interaction.service';
 import { type LayerMetadata, type OverlayMetadata } from '../models/map-layer.interfaces';
 import { CommonModule } from '@angular/common';
 
@@ -22,7 +23,8 @@ export class MapaComponent implements OnInit, OnDestroy {
 
   constructor(
     private layersService: MapLayersService,
-    private popupService: MapPopupService
+    private popupService: MapPopupService,
+    private interactionService: MapInteractionService
   ) { }
 
   ngOnInit(): void {
@@ -48,30 +50,14 @@ export class MapaComponent implements OnInit, OnDestroy {
     this.map.addControl(new NavigationControl({ visualizePitch: true }), 'top-right');
     this.map.addControl(new AttributionControl(), 'bottom-left');
 
-    // Evento click general para cualquier capa vectorial visible
-    this.map.on('click', (e) => {
-      // Obtener solo las capas vectoriales activas (circle, line, fill) y visibles
-      const vectorLayerIds = this.availableOverlays
-        .filter(o => this.map!.getLayoutProperty(o.id, 'visibility') === 'visible')
-        .map(o => o.id);
-
-      if (vectorLayerIds.length === 0) return;
-
-      // Buscar elementos de las capas vectoriales en la posición del clic, obtener las propiedades del primer
-      // elemento encontrado y mostrarlo en un popup.
-      const features = this.map!.queryRenderedFeatures(e.point, { layers: vectorLayerIds });
-      if (!features.length) return;
-
-      // Extraer propiedades del primer elemento encontrado
-      const { properties } = features[0];
-      if (!properties) return;
-
-      // Configurar y añadir el popup al mapa con la información procesada por el servicio
-      new Popup()
-        .setLngLat(e.lngLat)
-        .setHTML(this.popupService.getFeaturePopupHtml(properties))
-        .addTo(this.map!);
-    });
+    /******************************************************************
+     * Delegar la gestión de eventos al servicio de interacción
+     * @param map Instancia del mapa de MapLibre
+     * @param getOverlays Función que retorna las capas overlay actuales
+     * esto no es una lista de capas, sino que es una función que retorna 
+     * las capas overlay actuales.
+     ******************************************************************/
+    this.interactionService.initializeHandlers(this.map, () => this.availableOverlays);
   }
 
   switchToLayer(layerId: string) {
